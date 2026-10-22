@@ -32,37 +32,57 @@ username and time, and distributes it to every connected client.
 ## Project structure
 
 ```
-chat-app/
-├── TCPServer/                         Maven project #1
+## Project Structure
+
+```
+Paradigm-Project1/
+├── TCPServer/                                          Maven project #1 (server)
 │   ├── pom.xml
 │   └── src/main/
 │       ├── java/
-│       │   ├── TCPServer.java         entry point  (java TCPServer)
+│       │   ├── TCPServer.java                          entry point  (java TCPServer)
 │       │   └── com/chat/server/
-│       │       ├── model/             ← NO JavaFX imports
-│       │       │   ├── ChatServer.java      accept loop, broadcast, user registry
-│       │       │   ├── ClientHandler.java   one per client (virtual thread)
-│       │       │   ├── ServerConfig.java    loads server.properties
-│       │       │   ├── ServerListener.java  model → view callbacks
-│       │       │   └── Protocol.java        message format constants
+│       │       ├── model/                              no JavaFX imports
+│       │       │   ├── ChatServer.java                 accept loop, broadcast, user registry
+│       │       │   ├── ClientHandler.java              one per client (virtual thread)
+│       │       │   ├── ServerConfig.java               loads server.properties
+│       │       │   ├── ServerListener.java             model → view callbacks
+│       │       │   └── Protocol.java                   message format constants
 │       │       └── view/
-│       │           └── ServerApp.java       JavaFX UI
-│       └── resources/  server.properties, server.css
-├── TCPClient/                         Maven project #2
+│       │           └── ServerApp.java                  JavaFX UI (log, user ListView)
+│       └── resources/
+│           ├── server.properties                       IP and port configuration
+│           └── server.css
+│
+│
+├── TCPClient/                                          Maven project #2 (client)
 │   ├── pom.xml
 │   └── src/main/
 │       ├── java/
-│       │   ├── TCPClient.java         entry point  (java TCPClient <ip> <port>)
+│       │   ├── TCPClient.java                          entry point  (java TCPClient <ip> <port>)
 │       │   └── com/chat/client/
-│       │       ├── model/             ← NO JavaFX imports
-│       │       │   ├── ChatClient.java      socket + reader thread
-│       │       │   ├── ClientConfig.java    args / client.properties
-│       │       │   ├── ClientListener.java  model → view callbacks
+│       │       ├── model/                              no JavaFX imports
+│       │       │   ├── ChatClient.java                 socket + reader thread
+│       │       │   ├── ClientConfig.java               command-line args / client.properties
+│       │       │   ├── ClientListener.java             model → view callbacks
 │       │       │   └── Protocol.java
 │       │       └── view/
-│       │           └── ClientApp.java       JavaFX UI (login + chat screens)
-│       └── resources/  client.properties, client.css
-└── docs/   class, deployment, sequence and use-case diagrams (PlantUML)
+│       │           └── ClientApp.java                  JavaFX UI (login + chat screens)
+│       └── resources/
+│           ├── client.properties
+│           └── client.css
+├── artifacts/                                         Executable JARs
+│   ├── TCPServer.jar
+│   └── TCPClient.jar
+├── docs/                                              UML diagrams (.puml source + .png export)
+│   ├── class diagram
+│   └── deployment diagram
+│
+├── .gitignore
+└── README.md
+```
+
+> **Note:** The JARs bundle JavaFX libraries built for Windows, so they run on Windows only. On another OS, rebuild with `mvn clean package` in each project folder.
 ```
 
 ### Separation of Model and View
