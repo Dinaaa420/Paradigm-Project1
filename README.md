@@ -32,9 +32,6 @@ username and time, and distributes it to every connected client.
 ## Project structure
 
 ```
-## Project Structure
-
-```
 Paradigm-Project1/
 ├── TCPServer/                                          Maven project #1 (server)
 │   ├── pom.xml
@@ -80,7 +77,6 @@ Paradigm-Project1/
 │
 ├── .gitignore
 └── README.md
-```
 
 > **Note:** The JARs bundle JavaFX libraries built for Windows, so they run on Windows only. On another OS, rebuild with `mvn clean package` in each project folder.
 ```
