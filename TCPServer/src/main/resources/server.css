@@ -1,0 +1,41 @@
+.root-pane {
+    -fx-background-color: #f4f6fb;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.subtitle {
+    -fx-text-fill: #64748b;
+}
+
+.section {
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.user-list {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d7dce6;
+}
+
+.user-list .list-cell {
+    -fx-padding: 8 10;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent transparent #ffffff transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.log-area {
+    -fx-font-family: "Consolas", "Menlo", monospace;
+    -fx-font-size: 12px;
+    -fx-border-color: #d7dce6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
