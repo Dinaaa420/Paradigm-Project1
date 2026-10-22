@@ -157,14 +157,29 @@ command-line arguments always win.
 3. On other machines: `java -jar TCPClient.jar 192.168.1.10 3000`.
 
 ## UML diagrams
-Source files are in `docs/` (`.puml`). To get images: install the **PlantUML Integration**
-plugin in IntelliJ and use *Save diagram*, or paste the file into
+Source files are in `docs/` (`.puml`). To get images: Paste the file code into
 <https://www.plantuml.com/plantuml>.
 
 - `class-diagram.puml` — classes and relationships
 - `deployment-diagram.puml` — server node, client nodes, TCP links
-- `sequence-diagram.puml` — join → message → allUsers → leave
 - `use-case-diagram.puml` — actors and use cases
 
-## Author
-Dina Daoudi
+## AI PROMPTS USED
+
+Claude AI was used for this project. Here are the prompts used:
+
+"I’m building a multi-client chat app (Java 21, TCP sockets, JavaFX, Maven, two projects: TCPServer and TCPClient). Requirements are attached. Before writing code, propose the package structure, the text protocol between client and server (join, message, allUsers, bye/end, leave), and how the model and view will be decoupled. Dont write code yet, just brainstorming."
+
+"Using the agreed design, write only the server’s model package: ChatServer, ClientHandler, and a ServerListener interface. Use virtual threads, load IP and port from server.properties, and import no JavaFX in the model. Explain how you handle thread safety for the client list please"
+
+"Oke now write the server’s JavaFX view: a GridPane layout, a log area, a ListView of usernames with random background colors per user, and CSS styling. It must only talk to the model through ServerListener, and UI updates from network threads must use Platform.runLater. Don't forget"
+
+"Let's write the client model: connect using command-line args (host, port) with a fallback to client.properties, send and receive on separate threads, and handle “end”, “bye” and “allUsers”. Keep it free of JavaFX imports for now and expose events through a listener interface"
+
+"Write the client JavaFX view: a username screen, then the chat screen with a text area, SEND button, Enter-to-send, LEAVE button, and an “Online” label with a green circle. If the username is empty, enable READ-ONLY MODE by disabling the input and SEND. Keep it simple for now."
+
+"Review the code against the requirements list one item at a time. Flag anything missing, any race conditions, and what happens when the server dies while clients are connected. Propose fixes, then apply them"
+
+"Generate PlantUML files for the class diagram, deployment diagram, and user diagram, then write a README.md with an overview, setup steps, usage, the protocol, and the architecture"
+
+
