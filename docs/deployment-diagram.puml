@@ -1,0 +1,37 @@
+@startuml DeploymentDiagram
+title Multi-Client Chat — Deployment Diagram
+
+node "Server Machine\n(e.g. 192.168.1.10)" as serverNode <<device>> {
+  node "JVM 21" <<execution environment>> {
+    artifact "TCPServer.jar" as serverJar
+    file "server.properties\nserver.host=0.0.0.0\nserver.port=3000" as sprops
+    component "ChatServer\n(ServerSocket :3000)" as chatServer
+    component "ClientHandler × N\n(virtual threads)" as handlers
+  }
+}
+
+node "Client Machine 1" as c1 <<device>> {
+  node "JVM 21 " <<execution environment>> {
+    artifact "TCPClient.jar" as cj1
+    component "ChatClient\n(JavaFX UI)" as cc1
+  }
+}
+
+node "Client Machine 2" as c2 <<device>> {
+  node "JVM 21  " <<execution environment>> {
+    artifact "TCPClient.jar " as cj2
+    component "ChatClient \n(JavaFX UI)" as cc2
+  }
+}
+
+node "Client Machine N" as cn <<device>> {
+  artifact "TCPClient.jar  " as cjn
+}
+
+serverJar ..> sprops : reads at startup
+chatServer --> handlers : spawns per connection
+
+cc1 -- chatServer : <<TCP/IP>>\nport 3000
+cc2 -- chatServer : <<TCP/IP>>\nport 3000
+cjn -- chatServer : <<TCP/IP>>\nport 3000
+@enduml

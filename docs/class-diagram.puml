@@ -1,0 +1,124 @@
+@startuml ClassDiagram
+title Multi-Client Chat — Class Diagram
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "TCPServer (Maven project)" {
+  class TCPServer <<launcher>> {
+    + {static} main(args : String[])
+  }
+
+  package "com.chat.server.view" {
+    class ServerApp {
+      - users : ObservableList<String>
+      - userColors : Map<String,String>
+      - logArea : TextArea
+      - server : ChatServer
+      + start(stage : Stage)
+      + stop()
+      - colorFor(name : String) : String
+      + onLog(msg : String)
+      + onClientConnected(name : String)
+      + onClientDisconnected(name : String)
+    }
+  }
+
+  package "com.chat.server.model" {
+    interface ServerListener {
+      + onLog(msg : String)
+      + onClientConnected(name : String)
+      + onClientDisconnected(name : String)
+    }
+    class ChatServer {
+      - clients : Map<String, ClientHandler>
+      - executor : ExecutorService <<virtual threads>>
+      - running : boolean
+      + start()
+      + stop()
+      + getActiveUsers() : List<String>
+      ~ register(h : ClientHandler, name : String) : String
+      ~ announceJoin(h : ClientHandler)
+      ~ broadcastMessage(sender : String, text : String)
+      ~ remove(h : ClientHandler)
+    }
+    class ClientHandler <<Runnable>> {
+      - socket : Socket
+      - username : String
+      - readOnly : boolean
+      + run()
+      ~ send(line : String)
+      ~ close()
+    }
+    class ServerConfig <<record>> {
+      host : String
+      port : int
+      + {static} load() : ServerConfig
+    }
+    class "Protocol" as SProtocol <<utility>>
+  }
+}
+
+package "TCPClient (Maven project)" {
+  class TCPClient <<launcher>> {
+    + {static} main(args : String[])
+  }
+
+  package "com.chat.client.view" {
+    class ClientApp {
+      - lines : ObservableList<ChatLine>
+      - client : ChatClient
+      - statusLabel : Label
+      - statusDot : Circle
+      + init()
+      + start(stage : Stage)
+      + stop()
+      - buildLoginScene() : Scene
+      - buildChatScene(name : String, readOnly : boolean) : Scene
+    }
+  }
+
+  package "com.chat.client.model" {
+    interface ClientListener {
+      + onConnected(name : String, readOnly : boolean)
+      + onMessage(text : String)
+      + onInfo(text : String)
+      + onUserList(users : List<String>)
+      + onDisconnected(reason : String)
+    }
+    class ChatClient {
+      - socket : Socket
+      - readOnly : boolean
+      - username : String
+      + connect(username : String)
+      + send(text : String)
+      + requestActiveUsers()
+      + disconnect()
+    }
+    class ClientConfig <<record>> {
+      host : String
+      port : int
+      + {static} load(args : List<String>) : ClientConfig
+    }
+    class "Protocol" as CProtocol <<utility>>
+  }
+}
+
+TCPServer ..> ServerApp : launches
+ServerApp ..|> ServerListener
+ServerApp --> ChatServer : creates / controls
+ChatServer --> ServerListener : notifies
+ChatServer *-- "0..*" ClientHandler
+ChatServer --> ServerConfig
+ClientHandler --> ChatServer
+ClientHandler ..> SProtocol
+
+TCPClient ..> ClientApp : launches
+ClientApp ..|> ClientListener
+ClientApp --> ChatClient
+ClientApp ..> ClientConfig
+ChatClient --> ClientListener : notifies
+ChatClient ..> CProtocol
+
+ChatClient ..> ClientHandler : TCP socket\n(text protocol)
+@enduml

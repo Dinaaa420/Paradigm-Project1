@@ -1,0 +1,34 @@
+@startuml UseCaseDiagram
+title Multi-Client Chat — Use Cases
+left to right direction
+
+actor "Chat User" as User
+actor "Read-only User\n(no username)" as Guest
+actor "Server Operator" as Admin
+User <|-- Guest
+
+rectangle "Chat System" {
+  usecase "Connect to server" as UC1
+  usecase "Enter username" as UC2
+  usecase "Read group messages" as UC3
+  usecase "Send message\n(SEND / Enter)" as UC4
+  usecase "List active users\n(allUsers)" as UC5
+  usecase "Leave\n(LEAVE / end / bye)" as UC6
+  usecase "Start server" as UC7
+  usecase "Monitor connected users" as UC8
+  usecase "View activity log" as UC9
+}
+
+User --> UC1
+UC1 ..> UC2 : <<include>>
+User --> UC3
+User --> UC4
+User --> UC5
+Guest --> UC6
+User --> UC6
+Admin --> UC7
+Admin --> UC8
+Admin --> UC9
+
+note right of UC4 : Not available in READ-ONLY MODE
+@enduml

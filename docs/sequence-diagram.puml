@@ -1,0 +1,50 @@
+@startuml SequenceDiagram
+title Multi-Client Chat — Join, Message, allUsers, Leave
+autonumber
+
+actor "User A" as UA
+participant "ClientApp A\n(View)" as VA
+participant "ChatClient A\n(Model)" as CA
+participant "ClientHandler A\n(virtual thread)" as HA
+participant "ChatServer" as S
+participant "ClientHandler B" as HB
+participant "ChatClient B" as CB
+participant "ServerApp\n(View)" as SV
+
+== Connection ==
+UA -> VA : enter username, JOIN
+VA -> CA : connect("dina")
+CA -> HA : TCP connect + "dina\\n"
+HA -> S : register(handler, "dina")
+S --> HA : "dina"
+HA -> CA : WELCOME|dina , MODE|READ_WRITE
+CA -> VA : onConnected("dina", false)
+S -> SV : onLog("Welcome dina"), onClientConnected("dina")
+S -> HB : INFO|dina joined the chat
+HB -> CB : INFO|dina joined the chat
+
+== Send message ==
+UA -> VA : type text + Enter / SEND
+VA -> CA : send("Hello")
+CA -> HA : "Hello\\n"
+HA -> S : broadcastMessage("dina", "Hello")
+S -> HA : MSG|[20:15:02] dina: Hello
+S -> HB : MSG|[20:15:02] dina: Hello
+HB -> CB : MSG|...
+CB -> CB : listener.onMessage(...)
+
+== Active users ==
+UA -> CA : send("allUsers")
+CA -> HA : "allUsers\\n"
+HA -> S : getActiveUsers()
+HA -> CA : USERS|dina,sam   (only to this user)
+
+== Leave ==
+UA -> VA : LEAVE / "end" / "bye"
+VA -> CA : disconnect()
+CA -> HA : "end\\n" then close socket
+HA -> S : remove(handler)
+S -> SV : onClientDisconnected("dina")
+S -> HB : INFO|dina left the chat
+CA -> VA : onDisconnected() -> status "Offline"
+@enduml
