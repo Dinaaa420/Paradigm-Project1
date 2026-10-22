@@ -1,0 +1,54 @@
+.root-pane {
+    -fx-background-color: #f4f6fb;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.subtitle { -fx-text-fill: #64748b; }
+.hint     { -fx-text-fill: #64748b; -fx-font-size: 11px; }
+.error    { -fx-text-fill: #b91c1c; }
+
+/* status indicator */
+.dot-online   { -fx-fill: #22c55e; -fx-stroke: #15803d; }
+.dot-offline  { -fx-fill: #ef4444; -fx-stroke: #991b1b; }
+.status-online  { -fx-text-fill: #15803d; -fx-font-weight: bold; }
+.status-offline { -fx-text-fill: #b91c1c; -fx-font-weight: bold; }
+
+.readonly-banner {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+    -fx-padding: 8 12;
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
+}
+
+/* chat area */
+.chat-list {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d7dce6;
+}
+.chat-list .list-cell { -fx-padding: 6 10; -fx-background-color: white; }
+.chat-list .list-cell.line-message { -fx-text-fill: #0f172a; }
+.chat-list .list-cell.line-info    { -fx-text-fill: #64748b; -fx-font-style: italic; }
+.chat-list .list-cell.line-users   { -fx-text-fill: #1d4ed8; -fx-font-weight: bold; }
+
+.text-area { -fx-background-radius: 8; }
+
+/* buttons */
+.button {
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+}
+.button.primary { -fx-background-color: #2563eb; -fx-text-fill: white; }
+.button.primary:hover { -fx-background-color: #1d4ed8; }
+.button.danger  { -fx-background-color: #ef4444; -fx-text-fill: white; }
+.button.danger:hover  { -fx-background-color: #dc2626; }
