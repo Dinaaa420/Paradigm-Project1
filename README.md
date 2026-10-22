@@ -73,20 +73,14 @@ Paradigm-Project1/
 │   └── TCPClient.jar
 ├── docs/                                              UML diagrams (.puml source + .png export)
 │   ├── class diagram
-│   └── deployment diagram
+│   ├── deployment diagram
+│   └── use case diagram
 │
 ├── .gitignore
 └── README.md
 
 > **Note:** The JARs bundle JavaFX libraries built for Windows, so they run on Windows only. On another OS, rebuild with `mvn clean package` in each project folder.
 ```
-
-### Separation of Model and View
-The `model` packages contain all socket and business logic and never import JavaFX.
-They report events through an interface (`ServerListener`, `ClientListener`).
-The JavaFX classes implement that interface and only update the screen
-(using `Platform.runLater`, because callbacks arrive on network threads).
-You could replace the JavaFX UI with a console UI without changing a single model class.
 
 ### Protocol (one line of text per message, UTF-8)
 
